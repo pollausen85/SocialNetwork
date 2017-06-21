@@ -34,6 +34,9 @@ public:
 	Graph();
 	~Graph();
 
+	void addEdge(const T & i_v, const T & i_w);
+	void addEdge(const T & i_v, const T & i_w, const double i_cost);
+
 private:
 	//adjacency list representation
 	std::unordered_map<T,std::vector<std::unique_ptr<Edge<T>>>> m_graph;
@@ -66,6 +69,44 @@ Graph<T>::Graph()
 template<class T>
 Graph<T>::~Graph()
 {
+	using myIt = typename std::unordered_map<T,std::vector<std::unique_ptr<Edge<T>>>>::iterator;
+	myIt itEnd = m_graph.end();
+	for (myIt it = m_graph.begin(); it != itEnd; ++it)
+	{
+		const size_t size = it->second.size();
+		for (size_t i = 0; i < size; ++i)
+		{
+			it->second[i].reset(nullptr);
+		}
+	}
+}
+
+template<class T>
+void Graph<T>::addEdge(const T& i_v, const T& i_w)
+{
+        try
+        {
+                m_graph[i_v].push_back(std::make_unique<Edge<T>>(i_w));
+                m_graph[i_w].push_back(std::make_unique<Edge<T>>(i_v));
+        }
+        catch(std::exception & e)
+        {
+                throw e;
+        }
+}
+
+template<class T>
+void Graph<T>::addEdge(const T& i_v, const T& i_w, const double i_cost)
+{
+        try
+        {
+                m_graph[i_v].push_back(std::make_unique<Edge<T>>(i_w, i_cost));
+                m_graph[i_w].push_back(std::make_unique<Edge<T>>(i_v, i_cost));
+        }
+        catch(std::exception & e)
+        {
+                throw e;
+        }
 }
 
 #endif /* GRAPH_HPP_ */
