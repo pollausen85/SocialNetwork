@@ -24,12 +24,14 @@ int main(int argc, char *argv[])
 
 		std::cout << "Total number of people in the Social Network: " << socialNetwork.getNumberOfNodes() << "\n";
 
-		double minDist = socialNetwork.Dijkstra("STACEY_STRIMPLE", "RICH_OMLI");
+		std::vector<std::string> path;
+		double minDist = socialNetwork.Dijkstra("STACEY_STRIMPLE", "RICH_OMLI", path);
 		if (-1 == minDist)
 			std::cout << "Node not present in the graph. Impossible to compute minimum distance." << "\n";
 		else
 		{
 			std::cout << "Minimum distance: " << minDist << "\n";
+			socialNetwork.printPath(path);
 		}
 
 		return 0;
