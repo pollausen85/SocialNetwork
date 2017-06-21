@@ -37,6 +37,8 @@ public:
 	void addEdge(const T & i_v, const T & i_w);
 	void addEdge(const T & i_v, const T & i_w, const double i_cost);
 
+        inline const unsigned long getNumberOfNodes() const { return m_graph.size(); }
+
 private:
 	//adjacency list representation
 	std::unordered_map<T,std::vector<std::unique_ptr<Edge<T>>>> m_graph;
