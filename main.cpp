@@ -24,6 +24,14 @@ int main(int argc, char *argv[])
 
 		std::cout << "Total number of people in the Social Network: " << socialNetwork.getNumberOfNodes() << "\n";
 
+		double minDist = socialNetwork.Dijkstra("STACEY_STRIMPLE", "RICH_OMLI");
+		if (-1 == minDist)
+			std::cout << "Node not present in the graph. Impossible to compute minimum distance." << "\n";
+		else
+		{
+			std::cout << "Minimum distance: " << minDist << "\n";
+		}
+
 		return 0;
 	}
 	catch(std::exception & e)
@@ -31,5 +39,3 @@ int main(int argc, char *argv[])
 		std::cout << e.what() << "\n";
 	}
 }
-
-
