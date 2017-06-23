@@ -4,6 +4,7 @@ Graph, Shortest path
 ##### Build ######
 
 Use CMake version 3.6 or higher
+
 It needs C++11
 
 ##### Use #####
