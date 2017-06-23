@@ -10,7 +10,6 @@
 
 #include <unordered_map>
 #include <vector>
-#include <memory>
 #include <queue>
 #include <algorithm>
 
@@ -29,8 +28,8 @@ public:
 	Edge(const T & i_key, const double i_cost);
 	~Edge();
 
-	inline const T & getDestionationNode() const {return m_destinationNode;}
-	inline const double & getCost() const {return m_cost;}
+	inline const T & getDestinationNode() const { return m_destinationNode; }
+	inline const double & getCost() const { return m_cost; }
 private:
 	T m_destinationNode;
 	double m_cost;
@@ -53,7 +52,7 @@ public:
 
 private:
 	//adjacency list representation
-	std::unordered_map<T,std::vector<std::unique_ptr<Edge<T>>>> m_graph;
+	std::unordered_map<T, std::vector<Edge<T>>> m_graph;
 
 	void traceBackPath(const T & i_source, const T & i_target, std::unordered_map<T, T> & i_parents, std::vector<T> & i_path);
 };
@@ -85,16 +84,6 @@ Graph<T>::Graph()
 template<class T>
 Graph<T>::~Graph()
 {
-	using myIt = typename std::unordered_map<T,std::vector<std::unique_ptr<Edge<T>>>>::iterator;
-	myIt itEnd = m_graph.end();
-	for (myIt it = m_graph.begin(); it != itEnd; ++it)
-	{
-		const size_t size = it->second.size();
-		for (size_t i = 0; i < size; ++i)
-		{
-			it->second[i].reset(nullptr);
-		}
-	}
 }
 
 template<class T>
@@ -102,8 +91,8 @@ void Graph<T>::addEdge(const T& i_v, const T& i_w)
 {
 	try
 	{
-			m_graph[i_v].push_back(std::make_unique<Edge<T>>(i_w));
-			m_graph[i_w].push_back(std::make_unique<Edge<T>>(i_v));
+		m_graph[i_v].push_back(Edge<T>(i_w));
+		m_graph[i_w].push_back(Edge<T>(i_v));
 	}
 	catch(std::exception & e)
 	{
@@ -116,8 +105,8 @@ void Graph<T>::addEdge(const T& i_v, const T& i_w, const double i_cost)
 {
 	try
 	{
-			m_graph[i_v].push_back(std::make_unique<Edge<T>>(i_w, i_cost));
-			m_graph[i_w].push_back(std::make_unique<Edge<T>>(i_v, i_cost));
+		m_graph[i_v].push_back(Edge<T>(i_w, i_cost));
+		m_graph[i_w].push_back(Edge<T>(i_v, i_cost));
 	}
 	catch(std::exception & e)
 	{
@@ -151,11 +140,11 @@ double Graph<T>::Dijkstra(const T& i_source, const T& i_target, std::vector<T> &
 				break;
 			}
 
-			typename std::vector<std::unique_ptr<Edge<T>>>::const_iterator it;
+		std::vector<Edge<T>>::const_iterator it;
 			for (it = m_graph[u].begin(); it != m_graph[u].end(); ++it)
 			{
-				T v = (*it)->getDestionationNode();
-				double cost = (*it)->getCost();
+			T v = it->getDestinationNode();
+			double cost = it->getCost();
 
 				if (dist.find(v) == dist.end() || dist[v] > dist[u] + cost)
 				{
