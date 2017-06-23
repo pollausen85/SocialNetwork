@@ -3,11 +3,18 @@
 #include <sstream>
 #include <iostream>
 #include "Graph.hpp"
+#include <ctime>
 
 int main(int argc, char *argv[])
 {
 	try
 	{
+		if (argc != 4)
+		{
+			std::cout << "Wrong number of arguments" << "\n";
+			return 0;
+		}
+
 		Graph<std::string> socialNetwork;
 
 		std::ifstream file(argv[1]);
@@ -24,19 +31,33 @@ int main(int argc, char *argv[])
 
 		std::cout << "Total number of people in the Social Network: " << socialNetwork.getNumberOfNodes() << "\n";
 
-		std::vector<std::string> path;
-		double minDist = socialNetwork.Dijkstra("STACEY_STRIMPLE", "RICH_OMLI", path);
-		if (-1 == minDist)
-			std::cout << "Node not present in the graph. Impossible to compute minimum distance." << "\n";
+		std::vector<std::string> pathDijkstra, pathBidirDijkstra;
+
+		std::clock_t begin = clock();
+		double minDistDijkstra = socialNetwork.Dijkstra(argv[2], argv[3], pathDijkstra);
+		double elapsed_secs = double(clock() - begin) / CLOCKS_PER_SEC;
+		if (-1 == minDistDijkstra)
+			std::cout << "No path available between source and target" << "\n";
 		else
 		{
-			std::cout << "Minimum distance: " << minDist << "\n";
-			socialNetwork.printPath(path);
+			std::cout << "Minimum distance: " << minDistDijkstra << " (computed wiht Dijkstra in: " << elapsed_secs << " s)\n";
+			socialNetwork.printPath(pathDijkstra);
+		}
+
+		begin = clock();
+		double minDistBidirDijkstra = socialNetwork.BidirDijkstra(argv[2], argv[3], pathBidirDijkstra);
+		elapsed_secs = double(clock() - begin) / CLOCKS_PER_SEC;
+		if (-1 == minDistBidirDijkstra)
+			std::cout << "No path available between source and target" << "\n";
+		else
+		{
+			std::cout << "Minimum distance: " << minDistBidirDijkstra << " (computed with Bidirectional Dijkstra in: " << elapsed_secs << " s)\n";
+			socialNetwork.printPath(pathBidirDijkstra);
 		}
 
 		return 0;
 	}
-	catch(std::exception & e)
+	catch (std::exception &e)
 	{
 		std::cout << e.what() << "\n";
 	}
