@@ -50,11 +50,11 @@ public:
 	void addEdge(const T & i_v, const T & i_w);
 	void addEdge(const T & i_v, const T & i_w, const double i_cost);
 
-    inline const unsigned long getNumberOfNodes() const { return m_graph.size(); }
+    	inline const unsigned long getNumberOfNodes() const { return m_graph.size(); }
 
 	double Dijkstra(const T & i_source, const T & i_target, std::vector<T> & i_path);
 	double BidirDijkstra(const T & i_source, const T & i_target, std::vector<T> & i_path);
-    void printPath(const std::vector<T> & i_path);
+    	void printPath(const std::vector<T> & i_path);
 
 private:
 	//adjacency list representation
