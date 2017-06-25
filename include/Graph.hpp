@@ -150,7 +150,7 @@ double Graph<T>::Dijkstra(const T& i_source, const T& i_target, std::vector<T> &
 				return dist[i_target];
 			}
 
-			std::vector<Edge<T>>::const_iterator it;
+			typename std::vector<Edge<T>>::const_iterator it;
 			for (it = m_graph[u].begin(); it != m_graph[u].end(); ++it)
 			{
 			T v = it->getDestinationNode();
@@ -266,7 +266,7 @@ void Graph<T>::expandForwardFrontier(myHeap & i_queueF, std::unordered_set<T> & 
 	i_closedF.insert(u);
 	i_queueF.pop();
 
-	std::vector<Edge<T>>::const_iterator it;
+	typename std::vector<Edge<T>>::const_iterator it;
 	for (it = m_graph[u].begin(); it != m_graph[u].end(); ++it)
 	{
 		T v = it->getDestinationNode();
@@ -293,7 +293,7 @@ void Graph<T>::expandBackwardFrontier(myHeap & i_queueB, std::unordered_set<T>& 
 	i_closedB.insert(u);
 	i_queueB.pop();
 
-	std::vector<Edge<T>>::const_iterator it;
+	typename std::vector<Edge<T>>::const_iterator it;
 	for (it = m_graph[u].begin(); it != m_graph[u].end(); ++it)
 	{
 		T v = it->getDestinationNode();
